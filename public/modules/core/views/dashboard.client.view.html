@@ -1,0 +1,65 @@
+<div class="container" data-ng-controller="DashboardController" ng-init="loadData()">
+  <div class="navbar-header">
+    <button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <h1>DASHBOARD</h1>
+
+  <section>
+      <div class="page-header">
+          <h1>Projects</h1>
+      </div>
+      <select ng-model="selectedProject"
+              ng-options="project.name for project in projects">
+      </select>
+      <button ng-click="assignSelectedDevices()">Assign!!</button>
+      <br />
+      <div class="list-group">
+
+          <a data-ng-repeat="project in projects" data-ng-href="/#!/projects/{{project._id}}" class="list-group-item">
+        <small class="list-group-item-text">
+          Posted on
+          <span data-ng-bind="project.created | date:'medium'"></span>
+          by
+          <span data-ng-bind="project.user.displayName"></span>
+        </small>
+        <h4 class="list-group-item-heading" data-ng-bind="project.name"></h4>
+          </a>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-hide="!projects.$resolved || projects.length">
+        No Projects yet, why don't you <a href="/#!/projects/create">create one</a>?
+      </div>
+  </section>
+
+  <section data-ng-init="find()">
+      <div class="page-header">
+          <h1>Devices</h1>
+      </div>
+      <div class="list-group">
+        <div data-ng-repeat="device in unassignedDevices" style="border: 1px solid black; margin-bottom:10px;">
+          <a data-ng-href="/#!/devices/{{device._id}}" class="list-group-item">
+        <small class="list-group-item-text">
+          Posted on
+          <span data-ng-bind="device.created | date:'medium'"></span>
+          by
+          <span data-ng-bind="device.user.displayName"></span>
+        </small>
+        <h3 class="list-group-item-heading" data-ng-bind="device.name"></h3>
+        </a>
+        <h4>Project: {{ device.project }}</h4>
+        <input type="checkbox" ng-click="addDeviceToList(device)">
+        <br />
+        <br />
+      </div>
+
+      </div>
+      <div class="alert alert-warning text-center" data-ng-hide="!devices.$resolved || devices.length">
+        No Devices yet, why don't you <a href="/#!/devices/create">create one</a>?
+      </div>
+  </section>
+</div>
